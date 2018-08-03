@@ -1,0 +1,24 @@
+{
+  "name": "mws-restaurant-stage-1",
+  "version": "1.0.0",
+  "description": "--- #### _Three Stage Course Material Project - Restaurant Reviews_",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnisBdz/mws-restaurant-stage-1.git"
+  },
+  "author": "Anis BOUCHEKHIMA <bdzanis.ab@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AnisBdz/mws-restaurant-stage-1/issues"
+  },
+  "homepage": "https://github.com/AnisBdz/mws-restaurant-stage-1#readme",
+  "dependencies": {
+    "grunt": "^1.0.3",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-responsive-images": "^1.10.1"
+  }
+}

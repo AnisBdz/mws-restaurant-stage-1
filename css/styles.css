@@ -193,7 +193,6 @@ nav h1 a {
 }
 
 #restaurants-list .restaurant-img, #restaurants-list li .more {
-  height: 248px;
   border-radius: 4px 4px 0 0;
 }
 
@@ -231,7 +230,7 @@ nav h1 a {
   box-shadow: inset 0px 0px 100px rgba(0, 0, 0, 0.5);
   color: #fff;
   font-size: 16pt;
-  padding: 110px 10px;
+  padding: calc((3 / 4) * 100%) 0 0 0;
   width: 100%;
   box-sizing: border-box;
 
@@ -243,6 +242,17 @@ nav h1 a {
 
 #restaurants-list li .more:hover {
   opacity: 1;
+}
+
+#restaurants-list li .more span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  transform: translateY(50%);
+  margin-top: -25px;
 }
 
 /* ====================== Restaurant Details ====================== */
@@ -415,7 +425,7 @@ nav h1 a {
     max-width: 960px;
     grid-template-columns: repeat(3, 33.33fr);
     padding-top: 15px;
-    grid-gap: 10px;
+    grid-gap: 15px;
   }
 
 }

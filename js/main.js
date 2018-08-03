@@ -158,33 +158,17 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
 
-  const image = document.createElement('img');
-  image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  li.append(image);
+  const imageSource = DBHelper.imageUrlForRestaurant(restaurant).split('.')[0];
+  const url = DBHelper.urlForRestaurant(restaurant);
 
-  const name = document.createElement('h1');
-  li.append(name);
-
-  const nameLink = document.createElement('a');
-  nameLink.innerHTML = restaurant.name;
-  nameLink.href = DBHelper.urlForRestaurant(restaurant);
-  name.append(nameLink);
-
-  const neighborhood = document.createElement('p');
-  neighborhood.innerHTML = restaurant.neighborhood;
-  li.append(neighborhood);
-
-  const address = document.createElement('p');
-  address.innerHTML = restaurant.address;
-  li.append(address);
-
-  const more = document.createElement('a');
-  more.innerHTML = 'View Details';
-  more.href = DBHelper.urlForRestaurant(restaurant);
-  more.classList.add('more');
-
-  li.append(more)
+  li.innerHTML = `
+    <img src="${imageSource}" srcset="${imageSource}-s_1x.jpg 1x, ${imageSource}-m_2x.jpg 2x" class="restaurant-img">
+    <h1><a href="${url}">${restaurant.name}</a></h1>
+    <p>${restaurant.neighborhood}</p>
+    <p>${restaurant.address}</p>
+    <a href="${url}" class="more">
+      <span>View Details</span>
+    </a>`;
 
   return li
 }
