@@ -236,7 +236,7 @@ nav h1 a {
 
   position: absolute;
   top: 0;
-  opacity: 0;
+  /*opacity: 0;*/
   transition: opacity 0.3s ease-out 0s;
 }
 
@@ -246,13 +246,10 @@ nav h1 a {
 
 #restaurants-list li .more span {
   position: absolute;
-  top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-
-  transform: translateY(50%);
-  margin-top: -25px;
+  top: 50%;
+  margin-top: -15px;
 }
 
 /* ====================== Restaurant Details ====================== */
