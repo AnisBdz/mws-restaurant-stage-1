@@ -25,7 +25,7 @@ a:hover, a:focus {
   color: #3397db;
   text-decoration: none;
 }
-a img{
+a img {
   border: none 0px #fff;
 }
 h1, h2, h3, h4, h5, h6 {
@@ -236,7 +236,7 @@ nav h1 a {
 
   position: absolute;
   top: 0;
-  /*opacity: 0;*/
+  opacity: 0;
   transition: opacity 0.3s ease-out 0s;
 }
 
