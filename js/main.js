@@ -162,11 +162,11 @@ createRestaurantHTML = (restaurant) => {
   const url = DBHelper.urlForRestaurant(restaurant);
 
   li.innerHTML = `
-    <img src="${imageSource}" srcset="${imageSource}-s_1x.jpg 1x, ${imageSource}-m_2x.jpg 2x" class="restaurant-img">
+    <img alt="Picture of ${restaurant.name}" src="${imageSource}" srcset="${imageSource}-s_1x.jpg 1x, ${imageSource}-m_2x.jpg 2x" class="restaurant-img">
     <h1><a href="${url}">${restaurant.name}</a></h1>
     <p>${restaurant.neighborhood}</p>
     <p>${restaurant.address}</p>
-    <a href="${url}" class="more">
+    <a href="${url}" class="more" tabindex="-1" aria-hidden="true">
       <span>View Details</span>
     </a>`;
 
@@ -198,4 +198,3 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 } */
-
