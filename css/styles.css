@@ -71,13 +71,18 @@ nav h1 a {
   text-transform: uppercase;
 }
 
+.breadcrumb-container {
+  background-color: #eee;
+  margin: 0;
+}
+
 #breadcrumb {
     padding: 10px 40px 16px;
     list-style: none;
-    background-color: #eee;
     font-size: 17px;
-    margin: 0;
-    width: calc(50% - 80px);
+    margin: 0 auto;
+    width: 100%;
+    max-width: 960px;;
 }
 
 /* Display list items side by side */
