@@ -499,39 +499,35 @@ nav h1 a {
 @media screen and (min-width: 700px) {
 
   #restaurant-container {
-    max-width: 960px;
+    max-width: 700px;
     margin-right: auto;
     margin-left: auto;
   }
 
   #restaurant-img {
-    width: 60%;
-    order: 0;
+    border-radius: 4px 4px 0 0;
   }
 
-  .inside #map-container {
-    width: 100%;
-    order: 2;
-    min-height: 400px;
+  .inside #map {
+    border-radius: 0 0 0 4px;
+    border-width: 0 0 1px 1px;
+    border-color: #e0e0e0;
+    border-style: solid;
   }
 
   #restaurant-info-container {
-    width: 40%;
-    order: 1;
-    padding: 10px 0 0 0;
-    text-align: center;
+    border-radius: 0 0 4px 0;
+    border-width: 0 1px 1px 0;
+    border-color: #e0e0e0;
+    border-style: solid;
   }
 
-  #restaurant-info-container .wrapper {
-    margin: auto;
-  }
 }
-
-
 /* Major Breakpoint Large screens */
 @media screen and (min-width: 960px) {
+
   #map-container {
-    padding-top: 25px;
+    margin-top: 25px;
   }
 
   .filter-options > h2, .filter-options label {
@@ -554,13 +550,39 @@ nav h1 a {
     grid-gap: 15px;
   }
 
+  #restaurant-container {
+    max-width: 960px;
+  }
+
+
   #restaurant-img {
     border-radius: 4px 0 0 4px;
+    width: 60%;
   }
 
   #restaurant-info-container {
     border-radius: 0 4px 4px 0;
     border: 1px solid #e0e0e0;
+    width: 40%;
+    order: 1;
+    padding: 10px 0 0 0;
+    text-align: center;
+  }
+
+  #restaurant-info-container .wrapper {
+    margin: auto;
+  }
+
+  #restaurant-address, #restaurant-cuisine {
+    margin: 0 20px;
+  }
+
+  #restaurant-address {
+    margin-bottom: 10px;
+  }
+
+  #restaurant-hours {
+    border-spacing: 20px 15px;
   }
 
   #reviews-list {
@@ -569,4 +591,18 @@ nav h1 a {
     margin-bottom: 40px;
     align-items: start;
   }
+
+
+  .inside #map-container {
+    min-height: 400px;
+    width: 100%;
+    order: 2;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+  }
+
+  .inside #map {
+    border-radius: 4px;
+  }
+
 }
