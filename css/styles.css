@@ -82,7 +82,8 @@ nav h1 a {
     font-size: 17px;
     margin: 0 auto;
     width: 100%;
-    max-width: 960px;;
+    max-width: 960px;
+    box-sizing: border-box;
 }
 
 /* Display list items side by side */
