@@ -317,12 +317,13 @@ nav h1 a {
   width: 100%;
 }
 
-#restaurant-img {
+#restaurant-img, #restaurant-img img {
   display: block;
   width: 100%;
   height: auto;
   align-self: center;
 }
+
 #restaurant-address {
   font-size: 12pt;
   margin: 0 10px 10px;
