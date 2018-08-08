@@ -91,12 +91,10 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   image.innerHTML = `
     <source media="(max-width: 350px)" srcset="${imageSource}-s_1x.jpg 1x, ${imageSource}-m_2x.jpg 2x"/>
-    <img src="${imageSource}-m_2x.jpg">
+    <img src="${imageSource}-m_2x.jpg" alt="Photo of ${restaurant.name}">
   `;
-  //
-  // image.className = 'restaurant-img'
-  // image.src =  imageSource + '-m_2x.jpg';
-  // image.srcset = imageSource + '-m_2x.jpg 2x, ' + imageSource + '-s_1x.jpg 350w';
+
+  image.setAttribute('alt', `Photo of ${restaurant.name}`);
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
