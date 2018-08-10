@@ -55,7 +55,7 @@ main {
 }
 
 #footer a {
-  color: orange;  
+  color: orange;
 }
 
 /* ====================== Navigation ====================== */
@@ -106,6 +106,7 @@ nav h1 a:hover svg *, nav h1 a:focus svg * {
     width: 100%;
     max-width: 960px;
     box-sizing: border-box;
+    text-align: left;
 }
 
 /* Display list items side by side */
