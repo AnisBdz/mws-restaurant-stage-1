@@ -53,6 +53,11 @@ main {
   text-align: center;
   text-transform: uppercase;
 }
+
+#footer a {
+  color: orange;  
+}
+
 /* ====================== Navigation ====================== */
 nav {
   width: 100%;
