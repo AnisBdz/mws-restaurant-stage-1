@@ -1,4 +1,4 @@
-const cacheName = 'restaurants-v6';
+const cacheName = 'restaurants-v7';
 
 // when the service worker is installed
 self.addEventListener('install', e => {
@@ -19,7 +19,8 @@ self.addEventListener('install', e => {
       'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js',
       'https://unpkg.com/leaflet@1.3.1/dist/images/marker-icon.png',
       'https://unpkg.com/leaflet@1.3.1/dist/images/marker-shadow.png',
-      'node_modules/idb/lib/idb.js'
+      'node_modules/idb/lib/idb.js',
+      'manifest.webmanifest'
     ]);
 	}));
 })
