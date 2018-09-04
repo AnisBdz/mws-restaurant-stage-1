@@ -121,7 +121,7 @@ class DBHelper {
     DBHelper.openDatabase()
 
     // get by id
-    .then(db => db.transaction('restaurants').objectStore('restaurants').get(id))
+    .then(db => db.transaction('restaurants').objectStore('restaurants').get(parseInt(id)))
 
     // callback
     .then(restaurant => {

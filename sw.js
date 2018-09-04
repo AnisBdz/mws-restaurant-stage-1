@@ -1,4 +1,4 @@
-const cacheName = 'restaurants-v7';
+const cacheName = 'restaurants-v8';
 
 // when the service worker is installed
 self.addEventListener('install', e => {
