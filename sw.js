@@ -1,5 +1,8 @@
 const cacheName = 'restaurants-v8';
 
+const port = 1337
+const DATABASE_URL = `http://localhost:${port}`
+
 // when the service worker is installed
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(cacheName).then(function (cache) {
@@ -25,7 +28,7 @@ self.addEventListener('install', e => {
 	}));
 })
 
-// when the serve worker is activated
+// when the server worker is activated
 self.addEventListener('activate', e => {
   e.waitUntil(
     // delete all previous caches
@@ -38,6 +41,9 @@ self.addEventListener('activate', e => {
     })
   );
 })
+
+
+
 
 // when fetching assets
 self.addEventListener('fetch', e => {
@@ -77,6 +83,8 @@ self.addEventListener('fetch', e => {
         if (e.request.url.includes('-s_1x')) return caches.match(e.request.url.replace('-s_1x', '-m_2x'))
         else return caches.match(e.request.url.replace('-m_2x', '-s_1x'))
       }
+
+      return new Response(JSON.stringify({ error: true }))
 
     })
 	}));

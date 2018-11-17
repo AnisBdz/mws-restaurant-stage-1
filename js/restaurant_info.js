@@ -72,6 +72,7 @@ fetchRestaurantFromURL = (callback) => {
       }
 
       DBHelper.fetchReviewsByRestaurantID(id).then(reviews => {
+        console.log('reviews', reviews)
         self.restaurant.reviews = reviews
       })
 

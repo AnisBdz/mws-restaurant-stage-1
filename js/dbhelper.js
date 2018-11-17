@@ -34,13 +34,15 @@ class DBHelper {
           // register as fetched
           DBHelper.fetched = true
 
-    		  // fetch reviews
-    		  DBHelper.fetchReviews(Promise.resolve(db)).then(() => {
-    			  // return db
-    			  resolve(db)
-    		  })
+    		  // // fetch reviews
+    		  // DBHelper.fetchReviews(Promise.resolve(db)).then(() => {
+    			//   // return db
+    			//   resolve(db)
+    		  // })
+          //
+    		  // .catch(e => reject(e))
 
-    		  .catch(e => reject(e))
+          resolve(db)
 
         }, Promise.resolve(db))
       })
@@ -121,60 +123,86 @@ class DBHelper {
   }
 
 
-  static fetchReviews(db) {
-    // open db if not passed
-    if (!db) db = DBHelper.openDatabase()
-
-    // open store
-    return db.then(db => {
-        // fetch
-        return fetch(`${DBHelper.DATABASE_URL}/reviews`)
-
-        // convert to json
-        .then(data => data.json())
-
-        // insert data to db
-        .then(reviews => {
-          // insert each review
-          const tx = db.transaction('reviews', 'readwrite');
-          const os = tx.objectStore('reviews');
-
-          reviews.map(r => os.put(r))
-
-          // promise is done when all inserted
-          return tx.complete.then(() => reviews);
-
-        })
-    })
-  }
+  // static fetchReviews(db) {
+  //   // open db if not passed
+  //   if (!db) db = DBHelper.openDatabase()
+  //
+  //   // open store
+  //   return db.then(db => {
+  //       // fetch
+  //       return fetch(`${DBHelper.DATABASE_URL}/reviews`)
+  //
+  //       // convert to json
+  //       .then(data => data.json())
+  //
+  //       // insert data to db
+  //       .then(reviews => {
+  //         // insert each review
+  //         const tx = db.transaction('reviews', 'readwrite');
+  //         const os = tx.objectStore('reviews');
+  //
+  //         reviews.map(r => os.put(r))
+  //
+  //         // promise is done when all inserted
+  //         return tx.complete.then(() => reviews);
+  //
+  //       })
+  //
+  //       .then
+  //   })
+  // }
 
   static fetchReviewsByRestaurantID(restaurantID, db) {
-    // fetch
-    return fetch(`${DBHelper.DATABASE_URL}/reviews?restaurant_id=${restaurantID}`)
 
-    // convert to json
-    .then(data => data.json())
+    db = db || DBHelper.openDatabase()
 
-    // fallback to idb if error
-    .catch(() => {
-      // open db if not passed
-      if (!db) db = DBHelper.openDatabase()
+    return db.then(db => {
+      // fetch
+      return fetch(`${DBHelper.DATABASE_URL}/reviews?restaurant_id=${restaurantID}`)
 
-      let reviews = []
+      // convert to json
+      .then(data => data.json())
 
-      // open cursor
-      return db.then(db => db.transaction('reviews').objectStore('reviews').index('by-restaurant').openCursor())
+      .then(reviews => {
+        if (reviews.error) throw new Error('No response')
 
-      // filter results
-      .then(function filter(cursor) {
-        if (!cursor) return reviews
-
-        let review = cursor.value
-        if (review.restaurant_id == restaurantID) reviews.push(review)
-
-        cursor.continue().then(filter)
+        return reviews
       })
+
+      .then(reviews => {
+        // insert each review
+        const tx = db.transaction('reviews', 'readwrite');
+        const os = tx.objectStore('reviews');
+
+        reviews.map(r => os.put(r))
+
+
+        // promise is done when all inserted
+        return tx.complete.then(() => reviews);
+      })
+
+      // fallback to idb if error
+      .catch(e => {
+        console.log(e)
+
+        let reviews = []
+
+        // open cursor
+        return db.transaction('reviews').objectStore('reviews').index('by-restaurant').openCursor()
+
+        // filter results
+        .then(function filter(cursor) {
+          if (!cursor) return reviews
+
+          let review = cursor.value
+          if (review.restaurant_id == restaurantID) reviews.push(review)
+
+          return cursor.continue().then(filter)
+        })
+      })
+
     })
+
   }
 
 
