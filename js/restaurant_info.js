@@ -70,7 +70,15 @@ fetchRestaurantFromURL = (callback) => {
         console.error(error);
         return;
       }
-      fillRestaurantHTML();
+
+      DBHelper.fetchReviewsByRestaurantID(id).then(reviews => {
+        self.restaurant.reviews = reviews
+      })
+
+      .then(() => fillRestaurantHTML())
+
+      .catch(e => console.log('Could not load reviews', e))
+
       callback(null, restaurant)
     });
   }
@@ -161,7 +169,11 @@ createReviewHTML = (review) => {
 
   const date = document.createElement('p');
   date.className = "date"
-  date.innerHTML = review.date;
+
+  let d = new Date(review.createdAt)
+  let m = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+  date.innerHTML = m[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear()
   li.appendChild(date);
 
   const rating = document.createElement('p');

@@ -12,8 +12,10 @@ class DBHelper {
       switch (db.oldVersion) {
         case 0:
           let restaurantStore = db.createObjectStore('restaurants', { keyPath: 'id' })
-          let cuisineStore = db.createObjectStore('cuisines', { unique: true})
-          let neighborhoodStore = db.createObjectStore('neighborhoods', { unique: true})
+          let cuisineStore = db.createObjectStore('cuisines', { unique: true })
+          let neighborhoodStore = db.createObjectStore('neighborhoods', { unique: true })
+		      let reviews = db.createObjectStore('reviews', { keyPath: 'id' })
+          let reviewsRestaurantIndex = reviews.createIndex('by-restaurant', 'restaurant_id')
       }
 
     })
@@ -32,8 +34,14 @@ class DBHelper {
           // register as fetched
           DBHelper.fetched = true
 
-          // return db
-          resolve(db)
+    		  // fetch reviews
+    		  DBHelper.fetchReviews(Promise.resolve(db)).then(() => {
+    			  // return db
+    			  resolve(db)
+    		  })
+
+    		  .catch(e => reject(e))
+
         }, Promise.resolve(db))
       })
     })
@@ -45,7 +53,7 @@ class DBHelper {
    */
   static get DATABASE_URL() {
     const port = 1337 // Change this to your server port
-    return `http://localhost:${port}/restaurants`;
+    return `http://localhost:${port}`;
   }
 
   /**
@@ -65,7 +73,7 @@ class DBHelper {
         // if not enough restaurants, request full list
         if (restaurants.length < 10)
           // fetch
-          return fetch(DBHelper.DATABASE_URL)
+          return fetch(`${DBHelper.DATABASE_URL}/restaurants`)
 
           // convert to json
           .then(data => data.json())
@@ -112,6 +120,64 @@ class DBHelper {
     .catch(e => callback(e, null))
   }
 
+
+  static fetchReviews(db) {
+    // open db if not passed
+    if (!db) db = DBHelper.openDatabase()
+
+    // open store
+    return db.then(db => {
+        // fetch
+        return fetch(`${DBHelper.DATABASE_URL}/reviews`)
+
+        // convert to json
+        .then(data => data.json())
+
+        // insert data to db
+        .then(reviews => {
+          // insert each review
+          const tx = db.transaction('reviews', 'readwrite');
+          const os = tx.objectStore('reviews');
+
+          reviews.map(r => os.put(r))
+
+          // promise is done when all inserted
+          return tx.complete.then(() => reviews);
+
+        })
+    })
+  }
+
+  static fetchReviewsByRestaurantID(restaurantID, db) {
+    // fetch
+    return fetch(`${DBHelper.DATABASE_URL}/reviews?restaurant_id=${restaurantID}`)
+
+    // convert to json
+    .then(data => data.json())
+
+    // fallback to idb if error
+    .catch(() => {
+      // open db if not passed
+      if (!db) db = DBHelper.openDatabase()
+
+      let reviews = []
+
+      // open cursor
+      return db.then(db => db.transaction('reviews').objectStore('reviews').index('by-restaurant').openCursor())
+
+      // filter results
+      .then(function filter(cursor) {
+        if (!cursor) return reviews
+
+        let review = cursor.value
+        if (review.restaurant_id == restaurantID) reviews.push(review)
+
+        cursor.continue().then(filter)
+      })
+    })
+  }
+
+
   /**
    * Fetch a restaurant by its ID.
    */
@@ -127,7 +193,7 @@ class DBHelper {
     .then(restaurant => {
       // if not existing try fetching the restaurant
       if (!restaurant)
-        return fetch(`${DBHelper.DATABASE_URL}/${id}`)
+        return fetch(`${DBHelper.DATABASE_URL}/restaurants/${id}`)
         .then(data => data.json())
         .then(restaurant => callback(null, restaurant))
 

@@ -643,3 +643,7 @@ nav h1 a:hover svg *, nav h1 a:focus svg * {
 
 
 }
+
+#reviews-container > p {
+	text-align: center;
+}
