@@ -72,7 +72,6 @@ fetchRestaurantFromURL = (callback) => {
       }
 
       DBHelper.fetchReviewsByRestaurantID(id).then(reviews => {
-        console.log('reviews', reviews)
         self.restaurant.reviews = reviews
       })
 
@@ -137,6 +136,44 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 }
 
 /**
+ * Show add review modal
+ */
+showReviewModal = () => {
+  document.getElementById('review-modal').classList.remove('hidden')
+}
+
+hideReviewModal = () => {
+  document.getElementById('review-modal').classList.add('hidden')
+}
+
+submitReview = () => {
+  const name = document.getElementById('review-name').value
+  const text = document.getElementById('review-text').value
+  const rating = document.getElementById('review-rating').value
+
+  // check input
+  if (name == '' || text == '') {
+    return alert('Please provide all input.')
+  }
+
+
+}
+
+updateStars = (e) => {
+  let index = parseInt(e.target.id.split('-').pop())
+
+  for (let i = 1; i <= index; i++) {
+    document.getElementById(`star-${i}`).innerHTML = '★'
+  }
+
+  for (let i = index + 1; i <= 5; i++) {
+    document.getElementById(`star-${i}`).innerHTML = '☆'
+  }
+
+  document.getElementById('review-rating').value = index
+}
+
+/**
  * Create all reviews HTML and add them to the webpage.
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
@@ -144,6 +181,20 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
+
+  const addReview = document.createElement('button')
+  addReview.classList.add('add-review')
+  addReview.classList.add('btn')
+  addReview.innerHTML = '+ Add Review'
+  addReview.addEventListener('click', showReviewModal)
+  document.getElementById('close-review-modal').addEventListener('click', hideReviewModal)
+  document.getElementById('submit-review').addEventListener('click', submitReview)
+
+  for (let i = 1; i <= 5; i++) {
+    document.getElementById(`star-${i}`).addEventListener('click', updateStars)
+  }
+
+  container.appendChild(addReview)
 
   if (!reviews) {
     const noReviews = document.createElement('p');
