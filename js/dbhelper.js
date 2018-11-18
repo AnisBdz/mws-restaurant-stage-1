@@ -16,7 +16,7 @@ class DBHelper {
           let neighborhoodStore = db.createObjectStore('neighborhoods', { unique: true })
 		      let reviews = db.createObjectStore('reviews', { keyPath: 'id' })
           let reviewsRestaurantIndex = reviews.createIndex('by-restaurant', 'restaurant_id')
-          let deferedReveiews = db.createObjectStore('deffered-reviews')
+          let deferedReveiews = db.createObjectStore('deffered-reviews', { keyPath: "id", autoIncrement: true })
       }
 
     })
@@ -427,13 +427,9 @@ class DBHelper {
 
 
     .then(response => response.json())
-    .catch(() => {
-      // defer submission
-      return DBHelper.saveReview({name, rating, comments, restaurant_id})
-      .then(() => null)
-    })
 
     .then(json => {
+      if (json.error) throw new Error('No response')
       if (!json.hasOwnProperty('id')) return
 
       return DBHelper.openDatabase().then(db => {
@@ -446,14 +442,20 @@ class DBHelper {
         return tx.complete.then(() => json)
       })
     })
+
+    .catch(() => {
+      // defer submission
+      return DBHelper.saveReview({name, rating, comments, restaurant_id})
+      .then(() => null)
+    })
   }
 
   static saveReview(review) {
     let db = DBHelper.openDatabase()
 
     return db.then(db => {
-      const tx = db.transaction('restaurants', 'readwrite');
-      const os = tx.objectStore('restaurants');
+      const tx = db.transaction('deffered-reviews', 'readwrite');
+      const os = tx.objectStore('deffered-reviews');
       os.put(review)
 
       // promise is done when all inserted
