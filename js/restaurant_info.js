@@ -148,15 +148,28 @@ hideReviewModal = () => {
 
 submitReview = () => {
   const name = document.getElementById('review-name').value
-  const text = document.getElementById('review-text').value
+  const comments = document.getElementById('review-text').value
   const rating = document.getElementById('review-rating').value
 
   // check input
-  if (name == '' || text == '') {
+  if (name == '' || comments == '') {
     return alert('Please provide all input.')
   }
 
+  DBHelper.sendReview({
+    name, rating, comments, restaurant_id: self.restaurant.id
+  })
 
+  .then(review => {
+    if (!review) alert('There is no available internet connection at the moment, your review is saved and will be submited later')
+    else {
+      alert('Review submited successfully')
+      self.restaurant.reviews.push(review)
+      fillReviewsHTML()
+    }
+  })
+
+  .catch(e => console.log(e))
 }
 
 updateStars = (e) => {
@@ -177,6 +190,7 @@ updateStars = (e) => {
  * Create all reviews HTML and add them to the webpage.
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+  document.getElementById('reviews-container').innerHTML = `<ul id="reviews-list"></ul>`
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';

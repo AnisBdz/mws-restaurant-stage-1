@@ -16,6 +16,7 @@ class DBHelper {
           let neighborhoodStore = db.createObjectStore('neighborhoods', { unique: true })
 		      let reviews = db.createObjectStore('reviews', { keyPath: 'id' })
           let reviewsRestaurantIndex = reviews.createIndex('by-restaurant', 'restaurant_id')
+          let deferedReveiews = db.createObjectStore('deffered-reviews')
       }
 
     })
@@ -411,5 +412,54 @@ class DBHelper {
     );
     return marker;
   } */
+
+  static sendReview({name, rating, comments, restaurant_id}) {
+    // try submition
+    return fetch(`${DBHelper.DATABASE_URL}/reviews/`, {
+      method: 'POST',
+
+      header: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+
+      body: JSON.stringify({name,rating,comments,restaurant_id})
+    })
+
+
+    .then(response => response.json())
+    .catch(() => {
+      // defer submission
+      return DBHelper.saveReview({name, rating, comments, restaurant_id})
+      .then(() => null)
+    })
+
+    .then(json => {
+      if (!json.hasOwnProperty('id')) return
+
+      return DBHelper.openDatabase().then(db => {
+
+        const tx = db.transaction('reviews', 'readwrite');
+        const os = tx.objectStore('reviews');
+        os.put(json)
+
+        // promise is done when all inserted
+        return tx.complete.then(() => json)
+      })
+    })
+  }
+
+  static saveReview(review) {
+    let db = DBHelper.openDatabase()
+
+    return db.then(db => {
+      const tx = db.transaction('restaurants', 'readwrite');
+      const os = tx.objectStore('restaurants');
+      os.put(review)
+
+      // promise is done when all inserted
+      return tx.complete
+    })
+
+  }
 
 }
