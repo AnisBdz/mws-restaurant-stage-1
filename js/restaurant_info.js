@@ -161,11 +161,16 @@ submitReview = () => {
   })
 
   .then(review => {
-    if (!review) alert('There is no available internet connection at the moment, your review is saved and will be submited later')
+    if (!review) {
+      alert('There is no available internet connection at the moment, your review is saved and will be submited later')
+      hideReviewModal()
+    }
+
     else {
       alert('Review submited successfully')
       self.restaurant.reviews.push(review)
       fillReviewsHTML()
+      hideReviewModal()
     }
   })
 
