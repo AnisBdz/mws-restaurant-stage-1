@@ -95,30 +95,30 @@
   </footer>
   <!-- End footer -->
 
-  <div class="modal-container hidden" id="review-modal"  tabindex="-1" role="dialog">
+  <div class="modal-container hidden" id="review-modal"  tabindex="-1" aria-label="Add new review" role="dialog">
     <div class="modal">
 
       <button id="close-review-modal">×</button>
 
       <div class="form-group">
-        <label for="name">Name :</label>
+        <label for="review-name">Name :</label>
         <input type="text" required="" name="name" class="form-control" id="review-name" value="">
       </div>
 
 
       <div class="form-group">
-        <label for="review">Review: </label>
+        <label for="review-text">Review: </label>
         <textarea name="review" required="" class="form-control" id="review-text"></textarea>
       </div>
 
       <div class="form-group">
         <label for="rating">Rating :</label>
         <input type="hidden" name="rating" class="form-control" id="review-rating" value="1">
-        <button class="star" id="star-1">★</button>
-        <button class="star" id="star-2">☆</button>
-        <button class="star" id="star-3">☆</button>
-        <button class="star" id="star-4">☆</button>
-        <button class="star" id="star-5">☆</button>
+        <button class="star" id="star-1" aria-label="1 starts rating">★</button>
+        <button class="star" id="star-2" aria-label="2 starts rating">☆</button>
+        <button class="star" id="star-3" aria-label="3 starts rating">☆</button>
+        <button class="star" id="star-4" aria-label="4 starts rating">☆</button>
+        <button class="star" id="star-5" aria-label="5 starts rating">☆</button>
       </div>
 
       <button class="submit" id="submit-review">Submit</button>

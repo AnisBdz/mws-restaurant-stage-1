@@ -630,7 +630,7 @@ nav h1 a:hover svg *, nav h1 a:focus svg * {
     max-width: 960px;
     grid-template-columns: repeat(3, 33.33fr);
     margin-bottom: 40px;
-    align-items: start;
+    /* align-items: start; */
   }
 
 

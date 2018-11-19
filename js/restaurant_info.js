@@ -142,11 +142,16 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  * Show add review modal
  */
 showReviewModal = () => {
-  document.getElementById('review-modal').classList.remove('hidden')
-}
+  let modal = document.getElementById('review-modal')
 
+  modal.classList.remove('hidden')
+  modal.removeAttribute('aria-hidden')
+
+}
 hideReviewModal = () => {
-  document.getElementById('review-modal').classList.add('hidden')
+  let modal = document.getElementById('review-modal')
+  modal.classList.add('hidden')
+  modal.setAttribute('aria-hidden', true)
 }
 
 submitReview = () => {
