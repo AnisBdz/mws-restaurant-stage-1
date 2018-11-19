@@ -71,8 +71,11 @@ fetchRestaurantFromURL = (callback) => {
         return;
       }
 
-      DBHelper.fetchReviewsByRestaurantID(id).then(reviews => {
-        self.restaurant.reviews = reviews
+      DBHelper.sendDefferedReviews()
+      .then(() => {
+        return DBHelper.fetchReviewsByRestaurantID(id).then(reviews => {
+          self.restaurant.reviews = reviews
+        })
       })
 
       .then(() => fillRestaurantHTML())
@@ -164,6 +167,15 @@ submitReview = () => {
     if (!review) {
       alert('There is no available internet connection at the moment, your review is saved and will be submited later')
       hideReviewModal()
+      addEventListener("online", function () {
+        console.log('You are now online...')
+        DBHelper.sendDefferedReviews()
+        .then(reviews => {
+          console.log(reviews)
+          for (let i in reviews) self.restaurant.reviews.push({ ...reviews[i], createdAt: new Date()})
+          fillReviewsHTML()
+        })
+      })
     }
 
     else {

@@ -48,6 +48,11 @@ class DBHelper {
         }, Promise.resolve(db))
       })
     })
+    //
+    // // send deffered reviews
+    // .then(db => {
+    //     return DBHelper.sendDefferedReviews(Promise.resolve(db)).then(() => db)
+    // })
   }
 
   /**
@@ -461,7 +466,34 @@ class DBHelper {
       // promise is done when all inserted
       return tx.complete
     })
+  }
 
+  static sendDefferedReviews(dbp) {
+    let reviews = []
+    let reviewsbackup = []
+
+    // open database if not opened already
+    if (!dbp) dbp = DBHelper.openDatabase()
+
+    return dbp.then(db => {
+      // get deffered reviews
+      return db.transaction('deffered-reviews').objectStore('deffered-reviews').getAll()
+
+      .then(rs => {
+
+        if (!rs.length) return
+        reviews = rs
+        reviewsbackup = [...rs]
+
+        // remove from database
+        return Promise.all(reviews.map(r => db.transaction('deffered-reviews', 'readwrite').objectStore('deffered-reviews').delete(r.id)))
+      })
+
+      .then(function send() {
+        if (!reviews.length) return reviewsbackup
+        return DBHelper.sendReview(reviews.pop()).then(send)
+      })
+    })
   }
 
 }
