@@ -162,7 +162,7 @@ createRestaurantHTML = (restaurant) => {
   const url = DBHelper.urlForRestaurant(restaurant);
 
   li.innerHTML = `
-    <img alt="Picture of ${restaurant.name}" src="${imageSource}-s_1x.jpg" srcset="${imageSource}-s_1x.jpg 1x, ${imageSource}-m_2x.jpg 2x" class="restaurant-img">
+    <img alt="Picture of ${restaurant.name}" src="${imageSource}-s_1x.webp" srcset="${imageSource}-s_1x.webp 1x, ${imageSource}-m_2x.webp 2x" class="restaurant-img">
     <h1><a href="${url}">${restaurant.name}</a></h1>
     <p>${restaurant.neighborhood}</p>
     <p>${restaurant.address}</p>

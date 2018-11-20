@@ -4,10 +4,26 @@ const grunt = require('grunt')
 const ratio = 4 / 3
 
 grunt.initConfig({
+
+  cwebp: {
+    images: {
+      options: {
+        arguments: [ '-q', 50 ],
+        concurrency: 20
+      },
+      files: {
+        'img/': [
+          'img-sized/*.jpg'
+        ]
+      }
+    }
+  },
+
   responsive_images: {
     dev: {
 
       options: {
+        engine: 'gm',
         sizes: [
 
           {
@@ -31,7 +47,7 @@ grunt.initConfig({
       files: [{
         expand: true,
         src: '**/*.{jpg,gif,png}',
-        dest: 'img/',
+        dest: 'img-sized/',
         cwd: 'img-raw/'
       }]
     }
@@ -39,11 +55,12 @@ grunt.initConfig({
 
   clean: {
     dev: {
-      src: 'img/'
+      src: '{img-sized/,img/}'
     }
   }
 });
 
 grunt.loadNpmTasks('grunt-responsive-images');
 grunt.loadNpmTasks('grunt-contrib-clean');
-grunt.registerTask('default', ['clean', 'responsive_images']);
+grunt.loadNpmTasks('grunt-webp-compress');
+grunt.registerTask('default', ['clean', 'responsive_images', 'cwebp']);

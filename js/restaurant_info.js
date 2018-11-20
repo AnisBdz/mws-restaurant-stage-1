@@ -101,8 +101,8 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const image = document.getElementById('restaurant-img');
 
   image.innerHTML = `
-    <source media="(max-width: 350px)" srcset="${imageSource}-s_1x.jpg 1x, ${imageSource}-m_2x.jpg 2x"/>
-    <img src="${imageSource}-m_2x.jpg" alt="Photo of ${restaurant.name}">
+    <source media="(max-width: 350px)" srcset="${imageSource}-s_1x.webp 1x, ${imageSource}-m_2x.webp 2x"/>
+    <img src="${imageSource}-m_2x.webp" alt="Photo of ${restaurant.name}">
   `;
 
   image.setAttribute('alt', `Photo of ${restaurant.name}`);
