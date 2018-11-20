@@ -175,20 +175,24 @@ submitReview = () => {
       addEventListener("online", function () {
         console.log('You are now online...')
         DBHelper.sendDefferedReviews()
-        .then(reviews => {
-          console.log(reviews)
-          for (let i in reviews) self.restaurant.reviews.push({ ...reviews[i], createdAt: new Date()})
-          fillReviewsHTML()
-        })
+        // .then(reviews => {
+        //   console.log(reviews)
+        //   for (let i in reviews) self.restaurant.reviews.push({ ...reviews[i], createdAt: new Date()})
+        //   fillReviewsHTML()
+        // })
       })
     }
 
     else {
       alert('Review submited successfully')
-      self.restaurant.reviews.push(review)
-      fillReviewsHTML()
       hideReviewModal()
     }
+
+    self.restaurant.reviews.push({
+      name, rating, comments, restaurant_id: self.restaurant.id, createdAt: new Date()
+    })
+
+    fillReviewsHTML()
   })
 
   .catch(e => console.log(e))
